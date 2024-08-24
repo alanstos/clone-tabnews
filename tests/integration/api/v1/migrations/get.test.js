@@ -9,7 +9,6 @@ async function cleanDatabase() {
   const resp = await database.query(
     "drop schema public cascade; create schema public;",
   );
-  console.log("resposta=", resp);
 }
 
 test("GET to /api/v1/migrations should return 200", async () => {

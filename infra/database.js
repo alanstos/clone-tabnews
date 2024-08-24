@@ -10,13 +10,6 @@ async function query(queryObject) {
     password: process.env.POSTGRES_PASSWORD,
     ssl: getSSLValeus(),
   });
-  console.log(process.env.NODE_ENV);
-  console.log("Credencias database:", {
-    host: process.env.POSTGRES_HOST,
-    port: process.env.POSTGRES_PORT,
-    database: process.env.POSTGRES_DB,
-    user: process.env.POSTGRES_USER,
-  });
 
   try {
     await client.connect();
