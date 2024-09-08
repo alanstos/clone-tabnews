@@ -19,6 +19,7 @@ const _config = {
 
 const config = {
   moduleDirectories: ["node_modules", "<rootDir>"],
+  testTimeout: 60000, //1min
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
