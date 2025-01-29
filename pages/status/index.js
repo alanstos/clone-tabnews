@@ -16,7 +16,7 @@ export default function StatusPage() {
 }
 
 function UpdatedAt() {
-  const { data, error, isLoading } = useSWR("/api/v1/status", fetchAPI, {
+  const { data, isLoading } = useSWR("/api/v1/status", fetchAPI, {
     refreshInterval: 5000,
     dedupingInterval: 2000, //manter padrao
   });
