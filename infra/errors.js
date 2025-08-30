@@ -17,3 +17,21 @@ export class InternalServerError extends Error {
     };
   }
 }
+
+export class MethodNotAllwedError extends Error {
+  constructor() {
+    super("Método não permitido");
+    this.name = "MethodNotAllwedError";
+    this.action = "Verifique o metodo HTTP enviado";
+    this.statusCode = 405;
+  }
+
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      action: this.action,
+      status_code: this.statusCode,
+    };
+  }
+}
