@@ -31,12 +31,40 @@ describe("POST /api/v1/migrations", () => {
 
 describe("DELETE /api/v1/migrations", () => {
   describe("Anonymous user", () => {
-    test("Method Not Allowed", async () => {
+    test("Method Not Allowed DELETE", async () => {
       const response = await fetch("http://localhost:3000/api/v1/migrations", {
         method: "DELETE",
       });
-      await response.json();
       expect(response.status).toBe(405);
+
+      const respJson = await response.json();
+
+      expect(respJson).toEqual({
+        name: "MethodNotAllwedError",
+        message: "Método não permitido",
+        action: "Verifique o metodo HTTP enviado",
+        status_code: 405,
+      });
+    });
+  });
+});
+
+describe("PUT /api/v1/migrations", () => {
+  describe("Anonymous user", () => {
+    test("Method Not Allowed PUT", async () => {
+      const response = await fetch("http://localhost:3000/api/v1/migrations", {
+        method: "PUT",
+      });
+      expect(response.status).toBe(405);
+
+      const respJson = await response.json();
+
+      expect(respJson).toEqual({
+        name: "MethodNotAllwedError",
+        message: "Método não permitido",
+        action: "Verifique o metodo HTTP enviado",
+        status_code: 405,
+      });
     });
   });
 });
