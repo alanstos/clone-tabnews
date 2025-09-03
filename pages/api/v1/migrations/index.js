@@ -1,7 +1,6 @@
 import migrationRunner from "node-pg-migrate";
 import { resolve } from "node:path";
 import database from "infra/database";
-import { InternalServerError, MethodNotAllwedError } from "infra/errors";
 import { createRouter } from "next-connect";
 import controller from "infra/controller.js";
 
