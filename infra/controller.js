@@ -11,7 +11,7 @@ function onErrorHandler(error, req, response) {
     statusCode: error.statusCode,
   });
   console.log("\n Erro dentro do catch do onErrorHandler:");
-  //console.log(publicErrorObject);
+  console.log(publicErrorObject);
   response.status(publicErrorObject.statusCode).json(publicErrorObject);
 }
 
