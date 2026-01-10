@@ -1,6 +1,5 @@
 import { version as uuidVersion } from "uuid";
 import orchestrator from "tests/orchestrator.js";
-import database from "infra/database";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
@@ -22,17 +21,17 @@ describe("POST /api/v1/users", () => {
           password: "senha123",
         }),
       });
-      
+
       expect(response.status).toBe(201);
 
       const responseBody = await response.json();
       expect(responseBody).toEqual({
         id: responseBody.id,
-        username: 'fake',
-        email: 'fake@fake.com',
-        password: 'senha123',
+        username: "fake",
+        email: "fake@fake.com",
+        password: "senha123",
         created_at: responseBody.created_at,
-        updated_at: responseBody.updated_at
+        updated_at: responseBody.updated_at,
       });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
@@ -40,7 +39,7 @@ describe("POST /api/v1/users", () => {
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
     });
 
-    test("With duplicate 'email' ", async () => {
+    test("With duplicate 'email'", async () => {
       const response1 = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
         headers: {
@@ -52,7 +51,7 @@ describe("POST /api/v1/users", () => {
           password: "senha123",
         }),
       });
-      
+
       expect(response1.status).toBe(201);
 
       const response2 = await fetch("http://localhost:3000/api/v1/users", {
@@ -91,7 +90,7 @@ describe("POST /api/v1/users", () => {
           password: "senha123",
         }),
       });
-      
+
       expect(response1.status).toBe(201);
 
       const response2 = await fetch("http://localhost:3000/api/v1/users", {
@@ -117,6 +116,5 @@ describe("POST /api/v1/users", () => {
         status_code: 400,
       });
     });
-});
-
+  });
 });
