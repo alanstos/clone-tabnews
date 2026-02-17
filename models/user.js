@@ -19,7 +19,7 @@ async function findOneByUsername(username) {
       message: "Usuário não encontrado",
       action: "Verifique o nome do usuário",
     });
-  }  
+  }
 
   return result.rows[0];
 }

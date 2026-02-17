@@ -9,7 +9,6 @@ beforeAll(async () => {
 
 describe("GET /api/v1/users", () => {
   describe("Anonymous user", () => {
-
     test("With exact case match", async () => {
       const response1 = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
@@ -25,7 +24,9 @@ describe("GET /api/v1/users", () => {
 
       expect(response1.status).toBe(201);
 
-      const response2 = await fetch("http://localhost:3000/api/v1/users/MesmoCase");
+      const response2 = await fetch(
+        "http://localhost:3000/api/v1/users/MesmoCase",
+      );
 
       expect(response2.status).toBe(200);
 
@@ -44,8 +45,6 @@ describe("GET /api/v1/users", () => {
       expect(Date.parse(response2Body.updated_at)).not.toBeNaN();
     });
 
-
-
     test("With case mismatch", async () => {
       const response1 = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
@@ -61,7 +60,9 @@ describe("GET /api/v1/users", () => {
 
       expect(response1.status).toBe(201);
 
-      const response2 = await fetch("http://localhost:3000/api/v1/users/caixaalta");
+      const response2 = await fetch(
+        "http://localhost:3000/api/v1/users/caixaalta",
+      );
 
       expect(response2.status).toBe(200);
 
@@ -81,8 +82,9 @@ describe("GET /api/v1/users", () => {
     });
 
     test("With noexistent username", async () => {
-
-      const response = await fetch("http://localhost:3000/api/v1/users/usuariodesconhecido");
+      const response = await fetch(
+        "http://localhost:3000/api/v1/users/usuariodesconhecido",
+      );
 
       expect(response.status).toBe(404);
 
@@ -93,7 +95,6 @@ describe("GET /api/v1/users", () => {
         action: "Verifique o nome do usuário",
         status_code: 404,
       });
-    });  
-
+    });
   });
 });
