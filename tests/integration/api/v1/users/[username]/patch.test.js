@@ -11,13 +11,12 @@ beforeAll(async () => {
 
 describe("PATCH /api/v1/users", () => {
   describe("Anonymous user", () => {
-
     test("With noexistent username", async () => {
       const response = await fetch(
-        "http://localhost:3000/api/v1/users/usuarioInexistente", 
+        "http://localhost:3000/api/v1/users/usuarioInexistente",
         {
           method: "PATCH",
-        }
+        },
       );
 
       expect(response.status).toBe(404);
@@ -31,15 +30,14 @@ describe("PATCH /api/v1/users", () => {
       });
     });
 
-    test("With duplicated 'username' ", async () => {
-      const createdUser1 = await orchestrator.createUser({
+    test("With duplicated 'username'", async () => {
+      await orchestrator.createUser({
         username: "user1",
       });
 
-      const createdUser2 = await orchestrator.createUser({
+      await orchestrator.createUser({
         username: "user2",
-      });      
-
+      });
 
       const response = await fetch("http://localhost:3000/api/v1/users/user2", {
         method: "PATCH",
@@ -49,7 +47,7 @@ describe("PATCH /api/v1/users", () => {
         body: JSON.stringify({
           username: "user1",
         }),
-      }); 
+      });
 
       expect(response.status).toBe(400);
 
@@ -59,28 +57,30 @@ describe("PATCH /api/v1/users", () => {
         message: "Username already registered",
         action: "change_username",
         status_code: 400,
-      });    
-
+      });
     });
 
-    test("With duplicated 'email' ", async () => {
-      const createdUser1 = await orchestrator.createUser({
-        email: "email1@fake.com"
+    test("With duplicated 'email'", async () => {
+      await orchestrator.createUser({
+        email: "email1@fake.com",
       });
 
       const createdUser2 = await orchestrator.createUser({
-        email: "email2@fake.com"
+        email: "email2@fake.com",
       });
-     
-      const response = await fetch(`http://localhost:3000/api/v1/users/${createdUser2.username}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+
+      const response = await fetch(
+        `http://localhost:3000/api/v1/users/${createdUser2.username}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "email1@fake.com",
+          }),
         },
-        body: JSON.stringify({
-          email: "email1@fake.com",
-        }),
-      }); 
+      );
 
       expect(response.status).toBe(400);
 
@@ -90,22 +90,24 @@ describe("PATCH /api/v1/users", () => {
         message: "Email already registered",
         action: "change_email",
         status_code: 400,
-      });    
+      });
+    });
 
-    });  
-    
-    test("With UNIQUE 'username' ", async () => {
+    test("With UNIQUE 'username'", async () => {
       const createdUser = await orchestrator.createUser();
-     
-      const response = await fetch(`http://localhost:3000/api/v1/users/${createdUser.username}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+
+      const response = await fetch(
+        `http://localhost:3000/api/v1/users/${createdUser.username}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: "uniqueUserNovo",
+          }),
         },
-        body: JSON.stringify({
-          username: "uniqueUserNovo",
-        }),
-      }); 
+      );
 
       expect(response.status).toBe(200);
 
@@ -117,7 +119,7 @@ describe("PATCH /api/v1/users", () => {
         password: responseBody.password,
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
-      });  
+      });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
@@ -126,20 +128,23 @@ describe("PATCH /api/v1/users", () => {
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
     });
 
-    test("With new 'password' ", async () => {
+    test("With new 'password'", async () => {
       const createdUser = await orchestrator.createUser({
         password: "userNewPassword1",
       });
 
-      const response = await fetch(`http://localhost:3000/api/v1/users/${createdUser.username}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `http://localhost:3000/api/v1/users/${createdUser.username}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            password: "userNewPassword2",
+          }),
         },
-        body: JSON.stringify({
-          password: "userNewPassword2",
-        }),
-      }); 
+      );
 
       expect(response.status).toBe(200);
 
@@ -151,7 +156,7 @@ describe("PATCH /api/v1/users", () => {
         password: responseBody.password,
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
-      });  
+      });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
@@ -160,11 +165,17 @@ describe("PATCH /api/v1/users", () => {
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
 
       const userInDatabase = await user.findOneByUsername(createdUser.username);
-      const isPasswordCorrect = await password.compare("userNewPassword2", userInDatabase.password);
-      const isPasswordIncorrect = await password.compare("userNewPassword1", userInDatabase.password);
+      const isPasswordCorrect = await password.compare(
+        "userNewPassword2",
+        userInDatabase.password,
+      );
+      const isPasswordIncorrect = await password.compare(
+        "userNewPassword1",
+        userInDatabase.password,
+      );
 
       expect(isPasswordCorrect).toBe(true);
       expect(isPasswordIncorrect).toBe(false);
-    });     
+    });
   });
 });

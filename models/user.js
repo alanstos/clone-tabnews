@@ -69,7 +69,6 @@ async function update(username, userInputValues) {
 
   const updatedUser = await runUpdateQuery(userFound.id, userWithNewValues);
   return updatedUser;
-
 }
 
 async function runUpdateQuery(userId, userInputValues) {

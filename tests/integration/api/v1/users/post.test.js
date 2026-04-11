@@ -41,8 +41,14 @@ describe("POST /api/v1/users", () => {
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
 
       const userInDatabase = await user.findOneByUsername("fake");
-      const isPasswordCorrect = await password.compare("senha123", userInDatabase.password);
-      const isPasswordIncorrect = await password.compare("SENHA_ERRADA", userInDatabase.password);
+      const isPasswordCorrect = await password.compare(
+        "senha123",
+        userInDatabase.password,
+      );
+      const isPasswordIncorrect = await password.compare(
+        "SENHA_ERRADA",
+        userInDatabase.password,
+      );
 
       expect(isPasswordCorrect).toBe(true);
       expect(isPasswordIncorrect).toBe(false);
